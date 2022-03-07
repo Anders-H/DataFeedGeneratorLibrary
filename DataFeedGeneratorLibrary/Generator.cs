@@ -43,7 +43,7 @@ namespace DataFeedGeneratorLibrary
 
         private string Process(string template, string[] data)
         {
-            return "Hello!";
+            return template;
         }
     }
 }

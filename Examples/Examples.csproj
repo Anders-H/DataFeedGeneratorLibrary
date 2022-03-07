@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataFeedGeneratorLibrary\DataFeedGeneratorLibrary.csproj">
+      <Project>{abfac823-3530-4504-90ca-3948f15cf537}</Project>
+      <Name>DataFeedGeneratorLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
