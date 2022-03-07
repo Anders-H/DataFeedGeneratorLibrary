@@ -43,6 +43,14 @@ namespace DataFeedGeneratorLibrary
 
         private string Process(string template, string[] data)
         {
+            var index = 0;
+
+            foreach (var d in data)
+            {
+                template = template.Replace($@"(({index}))", data[index]);
+                index++;
+            }
+
             return template;
         }
     }

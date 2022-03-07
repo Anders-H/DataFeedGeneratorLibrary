@@ -28,6 +28,7 @@ namespace Examples
 
             const string record = @"
          <tr>
+            <td>((0))</td><td>((1))</td><td>((2))</td>
          </tr>
 ";
 
