@@ -12,6 +12,17 @@ namespace DataFeedGeneratorLibrary
             _records = new List<string[]>();
         }
 
+        public static SampleDataSource CreateRecordCollection()
+        {
+            var x = new SampleDataSource();
+            x.AddData(new[] { "Deep Purple", "Machine head", "1972" });
+            x.AddData(new[] { "Kansas", "Song for America", "1975" });
+            x.AddData(new[] { "Pink Floyd", "The dark side of the moon", "1973" });
+            x.AddData(new[] { "Queen", "A night at the opera", "1975" });
+            x.AddData(new[] { "Yes", "Close to the edge", "1972" });
+            return x;
+        }
+
         public int RecordCount =>
             _records.Count;
 
