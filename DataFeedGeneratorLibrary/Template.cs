@@ -5,6 +5,7 @@
         public string Header { get; set; }
         public string Record { get; set; }
         public string Footer { get; set; }
+        public string Separator { get; set; }
 
         public Template() : this("", "", "")
         {
@@ -15,6 +16,7 @@
             Header = header;
             Record = record;
             Footer = footer;
+            Separator = "";
         }
     }
 }

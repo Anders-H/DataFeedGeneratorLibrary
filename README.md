@@ -1,6 +1,31 @@
 # DataFeedGeneratorLibrary
 
+For .NET Framework 4.8.
+
 A simple library for generating any kind one dimensional data feed like RSS, HTML or JSON.
+
+The `Generator` class constructor takes a data source and a template. The `Generate` method generates the string output, as [shown here](https://github.com/Anders-H/DataFeedGeneratorLibrary/blob/main/Examples/Program.cs).
+
+The data source is any class that implemates the `IDataSource` interface, typically a list of string arrays. A sample implementation that can be populated with custom data is [shown here](https://github.com/Anders-H/DataFeedGeneratorLibrary/blob/main/DataFeedGeneratorLibrary/SampleDataSource.cs).
+
+Finally, the `Template` class has a header string that represents the start of the output, a record string that will be repeated for each record in the data source, and a footer that represents the end of the output.
+
+Value placeholders in the template is a column index surrounded by double parentheses.
+
+The following samples uses the sample data returned from the static method `CreateRecordCollection`. Implementation:
+
+```
+public static SampleDataSource CreateRecordCollection()
+{
+    var x = new SampleDataSource();
+    x.AddData(new[] { "Deep Purple", "Machine head", "1972" });
+    x.AddData(new[] { "Kansas", "Song for America", "1975" });
+    x.AddData(new[] { "Pink Floyd", "The dark side of the moon", "1973" });
+    x.AddData(new[] { "Queen", "A night at the opera", "1975" });
+    x.AddData(new[] { "Yes", "Close to the edge", "1972" });
+    return x;
+}
+```
 
 ## CSV sample
 
@@ -103,4 +128,71 @@ var g = new Generator(
       </table>
    </body>
 </html>
+```
+
+## JSON example
+
+This example defines a custom record separator and uses it between records. The placeholder for the separator in the template is `((sep))`.
+
+```
+const string header = @"{
+  ""Records"": [";
+
+const string record = @"
+    {
+      ""Artist"": ""((0))"",
+      ""Title"": ""((1))"",
+      ""Year"": ((2))
+    }((sep))";
+
+const string footer = @"
+  ]
+}";
+
+var template = new Template(
+    header,
+    record,
+    footer
+);
+
+template.Separator = ",";
+
+var g = new Generator(
+    SampleDataSource.CreateRecordCollection(),
+    template
+);
+```
+
+### Output
+
+```
+{
+  "Records": [
+    {
+      "Artist": "Deep Purple",
+      "Title": "Machine head",
+      "Year": 1972
+    },
+    {
+      "Artist": "Kansas",
+      "Title": "Song for America",
+      "Year": 1975
+    },
+    {
+      "Artist": "Pink Floyd",
+      "Title": "The dark side of the moon",
+      "Year": 1973
+    },
+    {
+      "Artist": "Queen",
+      "Title": "A night at the opera",
+      "Year": 1975
+    },
+    {
+      "Artist": "Yes",
+      "Title": "Close to the edge",
+      "Year": 1972
+    }
+  ]
+}
 ```

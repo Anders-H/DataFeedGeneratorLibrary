@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -20,12 +21,12 @@ namespace DataFeedGeneratorLibrary
         public string Generate()
         {
             var s = new StringBuilder();
-            s.Append(Process(_template.Header, _dataSource.GetData(0)));
+            s.Append(Process(_template.Header, _dataSource.GetData(0), false));
 
             for (var i = 0; i < _dataSource.RecordCount; i++)
-                s.Append(Process(_template.Record, _dataSource.GetData(i)));
+                s.Append(Process(_template.Record, _dataSource.GetData(i), i == _dataSource.RecordCount - 1));
             
-            s.Append(Process(_template.Footer, _dataSource.GetData(_dataSource.RecordCount - 1)));
+            s.Append(Process(_template.Footer, _dataSource.GetData(_dataSource.RecordCount - 1), false));
 
             return s.ToString();
         }
@@ -41,13 +42,14 @@ namespace DataFeedGeneratorLibrary
             }
         }
 
-        private string Process(string template, string[] data)
+        private string Process(string template, IReadOnlyList<string> data, bool isLast)
         {
             var index = 0;
 
             foreach (var d in data)
             {
                 template = template.Replace($@"(({index}))", data[index]);
+                template = template.Replace("((sep))", isLast ? "" : _template.Separator);
                 index++;
             }
 

@@ -11,6 +11,8 @@ namespace Examples
 
             HtmlExample();
 
+            JsonExample();
+
             Console.ReadLine();
         }
 
@@ -65,6 +67,38 @@ namespace Examples
                     record,
                     footer
                 )
+            );
+
+            Console.WriteLine(g.Generate());
+        }
+
+        private static void JsonExample()
+        {
+            const string header = @"{
+  ""Records"": [";
+
+            const string record = @"
+    {
+      ""Artist"": ""((0))"",
+      ""Title"": ""((1))"",
+      ""Year"": ((2))
+    }((sep))";
+
+            const string footer = @"
+  ]
+}";
+
+            var template = new Template(
+                header,
+                record,
+                footer
+            );
+
+            template.Separator = ",";
+
+            var g = new Generator(
+                SampleDataSource.CreateRecordCollection(),
+                template
             );
 
             Console.WriteLine(g.Generate());
