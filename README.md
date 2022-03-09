@@ -2,6 +2,34 @@
 
 A simple library for generating any kind one dimensional data feed like RSS, HTML or JSON.
 
+## CSV sample
+
+```
+const string header = @"Title; Artist; Year
+";
+const string record = @"""((0))""; ""((1))""; ((2))
+";
+var g = new Generator(
+    SampleDataSource.CreateRecordCollection(),
+    new Template(
+        header,
+        record,
+        ""
+    )
+);
+```
+
+### Output
+
+```
+Title; Artist; Year
+"Deep Purple"; "Machine head"; 1972
+"Kansas"; "Song for America"; 1975
+"Pink Floyd"; "The dark side of the moon"; 1973
+"Queen"; "A night at the opera"; 1975
+"Yes"; "Close to the edge"; 1972
+```
+
 ## HTML sample
 
 ```

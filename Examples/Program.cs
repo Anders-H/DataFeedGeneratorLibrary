@@ -9,10 +9,30 @@ namespace Examples
         {
             CsvExample();
 
+            HtmlExample();
+
             Console.ReadLine();
         }
 
         private static void CsvExample()
+        {
+            const string header = @"Title; Artist; Year
+";
+            const string record = @"""((0))""; ""((1))""; ((2))
+";
+            var g = new Generator(
+                SampleDataSource.CreateRecordCollection(),
+                new Template(
+                    header,
+                    record,
+                    ""
+                )
+            );
+
+            Console.WriteLine(g.Generate());
+        }
+
+        private static void HtmlExample()
         {
             const string header = @"
 <html>
