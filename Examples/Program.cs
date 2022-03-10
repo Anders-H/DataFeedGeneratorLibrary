@@ -13,6 +13,8 @@ namespace Examples
 
             JsonExample();
 
+            GroupExample();
+
             Console.ReadLine();
         }
 
@@ -93,6 +95,52 @@ namespace Examples
             );
 
             template.Separator = ",";
+
+            var g = new Generator(
+                SampleDataSource.CreateRecordCollection(),
+                template
+            );
+
+            Console.WriteLine(g.Generate());
+        }
+
+        private static void GroupExample()
+        {
+            const string header = @"
+<html>
+   <head>
+      <title>My record collection</title>
+   </head>
+   <body>
+      <table>
+         <tr>
+            <td><b>Title</b></td><td><b>Year</b></td>
+         </tr>";
+
+            const string group = @"
+         <tr>
+            <td style=""text-align: center;""><b>((0))</b></tr> <!-- NEW GROUP -->
+         </tr>";
+
+            const string record = @"
+         <tr>
+            <td>((1))</td><td>((2))</td>
+         </tr>";
+
+            const string footer = @"
+      </table>
+   </body>
+</html>
+";
+
+            var template = new Template(
+                header,
+                record,
+                footer
+            );
+
+            template.Group = group;
+            template.GroupBy = 0;
 
             var g = new Generator(
                 SampleDataSource.CreateRecordCollection(),

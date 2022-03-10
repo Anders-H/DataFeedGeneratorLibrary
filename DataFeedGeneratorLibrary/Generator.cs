@@ -20,9 +20,18 @@ namespace DataFeedGeneratorLibrary
             var s = new StringBuilder();
             s.Append(Process(_template.Header, _dataSource.GetData(0), 0, false));
 
+            var groupValue = "---!!!'''***---";
+
             for (var i = 0; i < _dataSource.RecordCount; i++)
+            {
+                if (_template.GroupBy >= 0 && _template.GroupBy < _dataSource.ColumnCount && groupValue != _dataSource.GetData(i, _template.GroupBy))
+                {
+                    s.Append(Process(_template.Group, _dataSource.GetData(i), i + 1, i == _dataSource.RecordCount - 1));
+                    groupValue = _dataSource.GetData(i, _template.GroupBy);
+                }
                 s.Append(Process(_template.Record, _dataSource.GetData(i), i + 1, i == _dataSource.RecordCount - 1));
-            
+            }
+
             s.Append(Process(_template.Footer, _dataSource.GetData(_dataSource.RecordCount - 1), _dataSource.RecordCount, false));
 
             return s.ToString();

@@ -14,6 +14,8 @@ Value placeholders in the template is a column index surrounded by double parent
 
 Special place holders are `((#))` for one based record number (shown in the CSV example) and `((sep))` for record separator (shown in the JSON example).
 
+Also, the generator can group on one column.
+
 The following samples uses the sample data returned from the static method `CreateRecordCollection`. Implementation:
 
 ```
@@ -209,4 +211,100 @@ var g = new Generator(
     }
   ]
 }
+```
+
+## Group example
+
+```
+const string header = @"
+<html>
+   <head>
+      <title>My record collection</title>
+   </head>
+   <body>
+      <table>
+         <tr>
+            <td><b>Title</b></td><td><b>Year</b></td>
+         </tr>";
+
+const string group = @"
+         <tr>
+            <td style=""text-align: center;""><b>((0))</b></tr> <!-- NEW GROUP -->
+         </tr>";
+
+const string record = @"
+         <tr>
+            <td>((1))</td><td>((2))</td>
+         </tr>";
+
+const string footer = @"
+      </table>
+   </body>
+</html>
+";
+
+var template = new Template(
+    header,
+    record,
+    footer
+);
+
+template.Group = group;
+template.GroupBy = 0;
+
+var g = new Generator(
+    SampleDataSource.CreateRecordCollection(),
+    template
+);
+```
+
+```
+<html>
+   <head>
+      <title>My record collection</title>
+   </head>
+   <body>
+      <table>
+         <tr>
+            <td><b>Title</b></td><td><b>Year</b></td>
+         </tr>
+         <tr>
+            <td style="text-align: center;"><b>Deep Purple</b></tr> <!-- NEW GROUP -->
+         </tr>
+         <tr>
+            <td>Machine head</td><td>1972</td>
+         </tr>
+         <tr>
+            <td style="text-align: center;"><b>Kansas</b></tr> <!-- NEW GROUP -->
+         </tr>
+         <tr>
+            <td>Song for America</td><td>1975</td>
+         </tr>
+         <tr>
+            <td>Leftoverture</td><td>1976</td>
+         </tr>
+         <tr>
+            <td style="text-align: center;"><b>Pink Floyd</b></tr> <!-- NEW GROUP -->
+         </tr>
+         <tr>
+            <td>The dark side of the moon</td><td>1973</td>
+         </tr>
+         <tr>
+            <td>The wall</td><td>1979</td>
+         </tr>
+         <tr>
+            <td style="text-align: center;"><b>Queen</b></tr> <!-- NEW GROUP -->
+         </tr>
+         <tr>
+            <td>A night at the opera</td><td>1975</td>
+         </tr>
+         <tr>
+            <td style="text-align: center;"><b>Yes</b></tr> <!-- NEW GROUP -->
+         </tr>
+         <tr>
+            <td>Close to the edge</td><td>1972</td>
+         </tr>
+      </table>
+   </body>
+</html>
 ```
