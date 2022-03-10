@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DataFeedGeneratorLibrary
 {
@@ -21,12 +18,12 @@ namespace DataFeedGeneratorLibrary
         public string Generate()
         {
             var s = new StringBuilder();
-            s.Append(Process(_template.Header, _dataSource.GetData(0), false));
+            s.Append(Process(_template.Header, _dataSource.GetData(0), 0, false));
 
             for (var i = 0; i < _dataSource.RecordCount; i++)
-                s.Append(Process(_template.Record, _dataSource.GetData(i), i == _dataSource.RecordCount - 1));
+                s.Append(Process(_template.Record, _dataSource.GetData(i), i + 1, i == _dataSource.RecordCount - 1));
             
-            s.Append(Process(_template.Footer, _dataSource.GetData(_dataSource.RecordCount - 1), false));
+            s.Append(Process(_template.Footer, _dataSource.GetData(_dataSource.RecordCount - 1), _dataSource.RecordCount, false));
 
             return s.ToString();
         }
@@ -42,7 +39,7 @@ namespace DataFeedGeneratorLibrary
             }
         }
 
-        private string Process(string template, IReadOnlyList<string> data, bool isLast)
+        private string Process(string template, IReadOnlyList<string> data, int serialNumber, bool isLast)
         {
             var index = 0;
 
@@ -50,6 +47,7 @@ namespace DataFeedGeneratorLibrary
             {
                 template = template.Replace($@"(({index}))", data[index]);
                 template = template.Replace("((sep))", isLast ? "" : _template.Separator);
+                template = template.Replace("((#))", serialNumber.ToString());
                 index++;
             }
 

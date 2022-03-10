@@ -10,7 +10,9 @@ The data source is any class that implemates the `IDataSource` interface, typica
 
 Finally, the `Template` class has a header string that represents the start of the output, a record string that will be repeated for each record in the data source, and a footer that represents the end of the output.
 
-Value placeholders in the template is a column index surrounded by double parentheses.
+Value placeholders in the template is a column index surrounded by double parentheses. The value of the first column is referred to as `((0))`, the second is referred to as `((1))`, and so on.
+
+Special place holders are `((#))` for one based record number (shown in the CSV example) and `((sep))` for record separator (shown in the JSON example).
 
 The following samples uses the sample data returned from the static method `CreateRecordCollection`. Implementation:
 
@@ -20,7 +22,9 @@ public static SampleDataSource CreateRecordCollection()
     var x = new SampleDataSource();
     x.AddData(new[] { "Deep Purple", "Machine head", "1972" });
     x.AddData(new[] { "Kansas", "Song for America", "1975" });
+    x.AddData(new[] { "Kansas", "Leftoverture", "1976" });
     x.AddData(new[] { "Pink Floyd", "The dark side of the moon", "1973" });
+    x.AddData(new[] { "Pink Floyd", "The wall", "1979" });
     x.AddData(new[] { "Queen", "A night at the opera", "1975" });
     x.AddData(new[] { "Yes", "Close to the edge", "1972" });
     return x;
@@ -30,9 +34,9 @@ public static SampleDataSource CreateRecordCollection()
 ## CSV sample
 
 ```
-const string header = @"Title; Artist; Year
+const string header = @"Counter; Title; Artist; Year
 ";
-const string record = @"""((0))""; ""((1))""; ((2))
+const string record = @"((#)); ""((0))""; ""((1))""; ((2))
 ";
 var g = new Generator(
     SampleDataSource.CreateRecordCollection(),
@@ -47,12 +51,14 @@ var g = new Generator(
 ### Output
 
 ```
-Title; Artist; Year
-"Deep Purple"; "Machine head"; 1972
-"Kansas"; "Song for America"; 1975
-"Pink Floyd"; "The dark side of the moon"; 1973
-"Queen"; "A night at the opera"; 1975
-"Yes"; "Close to the edge"; 1972
+Counter; Title; Artist; Year
+1; "Deep Purple"; "Machine head"; 1972
+2; "Kansas"; "Song for America"; 1975
+3; "Kansas"; "Leftoverture"; 1976
+4; "Pink Floyd"; "The dark side of the moon"; 1973
+5; "Pink Floyd"; "The wall"; 1979
+6; "Queen"; "A night at the opera"; 1975
+7; "Yes"; "Close to the edge"; 1972
 ```
 
 ## HTML sample
@@ -67,14 +73,12 @@ const string header = @"
       <table>
          <tr>
             <td><b>Artist</b></td><td><b>Title</b></td><td><b>Year</b></td>
-         </tr>
-";
+         </tr>";
 
 const string record = @"
          <tr>
             <td>((0))</td><td>((1))</td><td>((2))</td>
-         </tr>
-";
+         </tr>";
 
 const string footer = @"
       </table>
@@ -104,27 +108,27 @@ var g = new Generator(
          <tr>
             <td><b>Artist</b></td><td><b>Title</b></td><td><b>Year</b></td>
          </tr>
-
          <tr>
             <td>Deep Purple</td><td>Machine head</td><td>1972</td>
          </tr>
-
          <tr>
             <td>Kansas</td><td>Song for America</td><td>1975</td>
          </tr>
-
+         <tr>
+            <td>Kansas</td><td>Leftoverture</td><td>1976</td>
+         </tr>
          <tr>
             <td>Pink Floyd</td><td>The dark side of the moon</td><td>1973</td>
          </tr>
-
+         <tr>
+            <td>Pink Floyd</td><td>The wall</td><td>1979</td>
+         </tr>
          <tr>
             <td>Queen</td><td>A night at the opera</td><td>1975</td>
          </tr>
-
          <tr>
             <td>Yes</td><td>Close to the edge</td><td>1972</td>
          </tr>
-
       </table>
    </body>
 </html>
@@ -179,9 +183,19 @@ var g = new Generator(
       "Year": 1975
     },
     {
+      "Artist": "Kansas",
+      "Title": "Leftoverture",
+      "Year": 1976
+    },
+    {
       "Artist": "Pink Floyd",
       "Title": "The dark side of the moon",
       "Year": 1973
+    },
+    {
+      "Artist": "Pink Floyd",
+      "Title": "The wall",
+      "Year": 1979
     },
     {
       "Artist": "Queen",

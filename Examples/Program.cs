@@ -18,9 +18,9 @@ namespace Examples
 
         private static void CsvExample()
         {
-            const string header = @"Title; Artist; Year
+            const string header = @"Counter; Title; Artist; Year
 ";
-            const string record = @"""((0))""; ""((1))""; ((2))
+            const string record = @"((#)); ""((0))""; ""((1))""; ((2))
 ";
             var g = new Generator(
                 SampleDataSource.CreateRecordCollection(),
@@ -45,14 +45,12 @@ namespace Examples
       <table>
          <tr>
             <td><b>Artist</b></td><td><b>Title</b></td><td><b>Year</b></td>
-         </tr>
-";
+         </tr>";
 
             const string record = @"
          <tr>
             <td>((0))</td><td>((1))</td><td>((2))</td>
-         </tr>
-";
+         </tr>";
 
             const string footer = @"
       </table>
