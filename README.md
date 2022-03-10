@@ -1,6 +1,10 @@
 # DataFeedGeneratorLibrary
 
-For .NET Framework 4.8.
+For .NET Framework 4.8. [Install](https://www.nuget.org/packages/DataFeedGenerator/):
+
+```
+Install-Package DataFeedGenerator
+```
 
 A simple library for generating any kind one dimensional data feed like RSS, HTML or JSON.
 
