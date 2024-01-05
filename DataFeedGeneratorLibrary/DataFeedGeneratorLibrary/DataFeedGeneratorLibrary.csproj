@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>1.1</Version>
+    <AssemblyVersion>1.1</AssemblyVersion>
+    <FileVersion>1.1</FileVersion>
+    <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+    <PackageReleaseNotes>Moved to .NET 8.0.</PackageReleaseNotes>
+    <PackageId>DataFeedGenerator</PackageId>
+    <Title>DataFeedGenerator</Title>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Anders-H/DataFeedGeneratorLibrary</RepositoryUrl>
+    <Description>A simple library for generating any kind one dimensional data feed like RSS, HTML or JSON.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

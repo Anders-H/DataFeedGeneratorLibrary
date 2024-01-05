@@ -1,7 +1,5 @@
 # DataFeedGeneratorLibrary
 
-For .NET Framework 4.8. [Install](https://www.nuget.org/packages/DataFeedGenerator/):
-
 ```
 Install-Package DataFeedGenerator
 ```
